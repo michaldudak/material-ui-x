@@ -1,12 +1,28 @@
-import { useEffect, useRef, useState } from 'react';
 import { ResizeObserver } from '@juggle/resize-observer';
+import * as React from 'react';
 
-const combineChartDimensions = (dimensions) => {
+interface ChartDimensions {
+  width?: number;
+  height?: number;
+  marginTop?: number;
+  marginLeft?: number;
+  marginRight?: number;
+  marginBottom?: number;
+}
+
+interface CombinedChartDimensions extends Required<ChartDimensions> {
+  boundedHeight: number;
+  boundedWidth: number;
+}
+
+const combineChartDimensions = (dimensions: ChartDimensions) => {
   const parsedDimensions = {
     marginTop: 10,
     marginRight: 10,
     marginBottom: 10,
     marginLeft: 10,
+    width: 0,
+    height: 0,
     ...dimensions,
   };
 
@@ -20,33 +36,49 @@ const combineChartDimensions = (dimensions) => {
       parsedDimensions.width - parsedDimensions.marginLeft - parsedDimensions.marginRight,
       0,
     ),
-  };
+  } as CombinedChartDimensions;
 };
 
-const useChartDimensions = (settings) => {
-  const ref = useRef();
+function useChartDimensions(
+  settings: ChartDimensions,
+): [React.MutableRefObject<Element | null>, CombinedChartDimensions] {
+  const ref = React.useRef<Element | null>(null);
   const dimensions = combineChartDimensions(settings);
 
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const [width, setWidth] = React.useState(0);
+  const [height, setHeight] = React.useState(0);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (dimensions.width && dimensions.height) {
-      return [ref, dimensions];
+      return;
     }
 
     const element = ref.current;
+    if (!element) {
+      return;
+    }
+
     const resizeObserver = new ResizeObserver((entries) => {
       if (Array.isArray(entries) && entries.length) {
-        const entry = entries[0];
+        const entry = entries[entries.length - 1];
         setWidth(entry.contentRect.width);
         setHeight(entry.contentRect.height);
       }
     });
+
     resizeObserver.observe(element);
 
-    return () => resizeObserver.disconnect();
+    /* eslint-disable-next-line consistent-return */
+    return () => {
+      resizeObserver.disconnect();
+    };
+
+    // TODO: Prevent this from running too frequently
   }, [dimensions, height, width]);
+
+  if (dimensions.width && dimensions.height) {
+    return [ref, dimensions];
+  }
 
   const newSettings = combineChartDimensions({
     ...dimensions,
@@ -55,6 +87,6 @@ const useChartDimensions = (settings) => {
   });
 
   return [ref, newSettings];
-};
+}
 
 export default useChartDimensions;
