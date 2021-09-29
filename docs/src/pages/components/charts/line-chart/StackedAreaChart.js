@@ -13,8 +13,8 @@ export default function StackedAreaChart() {
       smoothed
       stacked
       xScaleType="time"
-      xKey="date"
-      xDomain={[new Date(2020, 0, 1), new Date(2022, 9, 1)]}
+      xValueSelector="date"
+      xDomain={[new Date(2020, 0, 1), new Date(2022, 10, 10)]}
       yDomain={[0, 450]}
     >
       <Grid disableX />

@@ -41,8 +41,8 @@ const combineChartDimensions = (dimensions: ChartDimensions) => {
 
 function useChartDimensions(
   settings: ChartDimensions,
-): [React.MutableRefObject<Element | null>, CombinedChartDimensions] {
-  const ref = React.useRef<Element | null>(null);
+): [React.MutableRefObject<SVGSVGElement | null>, CombinedChartDimensions] {
+  const ref = React.useRef<SVGSVGElement | null>(null);
   const dimensions = combineChartDimensions(settings);
 
   const [width, setWidth] = React.useState(0);
