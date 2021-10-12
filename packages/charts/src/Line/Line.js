@@ -84,26 +84,28 @@ const Line = (props) => {
   }
 
   return (
-    <g clipPath={`url(#${chartId}-clipPath)`}>
-      {fill && (
+    <g>
+      <g clipPath={`url(#${chartId}-clipPath)`}>
+        {fill && (
+          <path
+            d={areaPath(chartData)}
+            stroke="none"
+            fill={fill}
+            strokeWidth={strokeWidth}
+            transform={`translate(0, ${boundedHeight})`}
+            style={{ pointerEvents: 'none' }}
+          />
+        )}
         <path
-          d={areaPath(chartData)}
-          stroke="none"
-          fill={fill}
+          d={linePath(chartData)}
+          fill="none"
+          stroke={stroke}
+          strokeDasharray={strokeDasharray}
           strokeWidth={strokeWidth}
           transform={`translate(0, ${boundedHeight})`}
           style={{ pointerEvents: 'none' }}
         />
-      )}
-      <path
-        d={linePath(chartData)}
-        fill="none"
-        stroke={stroke}
-        strokeDasharray={strokeDasharray}
-        strokeWidth={strokeWidth}
-        transform={`translate(0, ${boundedHeight})`}
-        style={{ pointerEvents: 'none' }}
-      />
+      </g>
       {(markerShape !== 'none' || highlightMarkers) && (
         <Scatter
           data={pointData}
