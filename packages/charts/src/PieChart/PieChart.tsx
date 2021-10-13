@@ -30,6 +30,10 @@ export interface PieChartProps {
    */
   data: ChartData[];
   /**
+   * The angle to end the chart. Useful for making guages in conjunction with the `innerRadius` prop.
+   */
+  endAngle?: number;
+  /**
    * If true, the segment will expand when hovered
    * @default false
    */
@@ -87,6 +91,7 @@ export interface PieChartProps {
 const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChart(props, ref) {
   const {
     data,
+    endAngle,
     expandOnHover = false,
     innerRadius = 0,
     label,
@@ -127,7 +132,11 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
   const pie = d3
     .pie()
     .startAngle((startAngle * Math.PI) / 180) // Degrees to radians
-    .endAngle(startAngle + ((((360 - startAngle) * Math.PI) / 180) * percentVisible) / 100)
+    .endAngle(
+      endAngle
+        ? (((endAngle * Math.PI) / 180) * percentVisible) / 100
+        : startAngle + ((((360 - startAngle) * Math.PI) / 180) * percentVisible) / 100,
+    )
     .value((d) => d.value)
     .sort(sortOrder);
 
