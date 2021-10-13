@@ -18,8 +18,8 @@ export default function ExpaindingPieChart() {
   const data = generateData();
 
   return (
-    <div style={{ width: '100%', height: 300 }}>
-      <PieChart data={data} innerRadius={70} />
+    <div style={{ width: '100%', height: 350 }}>
+      <PieChart data={data} innerRadius={90} />
     </div>
   );
 }

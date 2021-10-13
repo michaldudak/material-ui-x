@@ -20,7 +20,7 @@ export default function BasicPieChart() {
   const data = generateData();
 
   return (
-    <div style={{ width: '100%', height: 300 }}>
+    <div style={{ width: '100%', height: 400 }}>
       <PieChart
         data={data}
         margin={{ top: 50, bottom: 20 }}
