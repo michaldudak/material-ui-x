@@ -39,6 +39,10 @@ export interface PieChartProps {
    */
   expandOnHover?: boolean;
   /**
+   * Background fill color for the chart. Useful when creating a dial or other gauge-like chart.
+   */
+  fill?: string;
+  /**
    * The radius at which to start the inside of the segment.
    */
   innerRadius?: number;
@@ -91,8 +95,9 @@ export interface PieChartProps {
 const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChart(props, ref) {
   const {
     data,
-    endAngle,
+    endAngle: endAngleProp,
     expandOnHover = false,
+    fill,
     innerRadius = 0,
     label,
     labelColor = 'currentColor',
@@ -103,7 +108,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
     segmentLabelFontSize = 12,
     segmentLabelRadius,
     sort,
-    startAngle = 0,
+    startAngle: startAngleProp = 0,
     ...other
   } = props;
 
@@ -129,14 +134,15 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
     sortOrder = descending;
   }
 
+  const startAngle = (startAngleProp * Math.PI) / 180; // Degrees to radians
+  const endAngle = endAngleProp
+    ? (((endAngleProp * Math.PI) / 180) * percentVisible) / 100
+    : startAngle + ((((360 - startAngle) * Math.PI) / 180) * percentVisible) / 100;
+
   const pie = d3
     .pie()
-    .startAngle((startAngle * Math.PI) / 180) // Degrees to radians
-    .endAngle(
-      endAngle
-        ? (((endAngle * Math.PI) / 180) * percentVisible) / 100
-        : startAngle + ((((360 - startAngle) * Math.PI) / 180) * percentVisible) / 100,
-    )
+    .startAngle(startAngle)
+    .endAngle(endAngle)
     .value((d) => d.value)
     .sort(sortOrder);
 
@@ -161,6 +167,20 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
           boundedHeight / 2 + margin.top
         })`}
       >
+        {fill && (
+          <PieSegment
+            data={{
+              startAngle,
+              endAngle,
+              padAngle: 0,
+              index: 0,
+              value: 0,
+              data: { fill },
+            }}
+            innerRadius={innerRadius}
+            radius={radius}
+          />
+        )}
         {pie(data).map((d, i) => (
           <PieSegment
             data={d}

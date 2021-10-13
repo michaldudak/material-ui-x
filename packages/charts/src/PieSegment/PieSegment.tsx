@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as d3 from 'd3';
 
 interface SegmentData {
-  data: { value: number; label?: string; fill: string; stroke?: string };
+  data: { value?: number; label?: string; fill: string; stroke?: string };
   endAngle: number;
   index: number;
   padAngle: number;
@@ -19,7 +19,7 @@ export interface PieSegmentProps {
    * If true, the segment will expand when hovered
    * @default false
    */
-  expandOnHover: boolean;
+  expandOnHover?: boolean;
   /**
    * The radius at which to start the inside of the segment.
    * @default 0

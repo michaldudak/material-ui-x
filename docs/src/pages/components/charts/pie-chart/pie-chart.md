@@ -25,7 +25,7 @@ You can use the `innerRadius` prop to create a donut.
 
 ## Partial donut chart
 
-You can use the `startAngle` and `endAngle` props to creat a dial.
+You can use the `startAngle`, `endAngle` and `fill` props to creat a dial.
 
 {{"demo": "pages/components/charts/pie-chart/PartialDonutChart.js"}}
 
