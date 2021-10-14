@@ -39,9 +39,23 @@ export interface PieChartProps {
    */
   expandOnHover?: boolean;
   /**
-   * Background fill color for the chart. Useful when creating a dial or other gauge-like chart.
+   * Background fill color for the chart. Typically used when creating a guage.
    */
   fill?: string;
+  /**
+   * The label to place at the center of the chart. Typically used with `innerRadius` to create a gauge.
+   */
+  innerLabel?: string;
+  /**
+   * The color of the inner label.
+   * @default 'currentColor'
+   */
+  innerLabelColor?: string;
+  /**
+   * The font size of the inner label.
+   * @default 24
+   */
+  innerLabelFontSize?: number;
   /**
    * The radius at which to start the inside of the segment.
    */
@@ -98,6 +112,8 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
     endAngle: endAngleProp,
     expandOnHover = false,
     fill,
+    innerLabel,
+    innerLabelFontSize = 24,
     innerRadius = 0,
     label,
     labelColor = 'currentColor',
@@ -195,6 +211,16 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
           />
         ))}
       </g>
+      {innerLabel && (
+        <text
+          fill={labelColor}
+          transform={`translate(${width / 2}, ${height / 2})`}
+          fontSize={innerLabelFontSize}
+          textAnchor="middle"
+        >
+          {innerLabel}
+        </text>
+      )}
       {label && (
         <text
           fill={labelColor}

@@ -22,6 +22,7 @@ export default function PartialDonutChart() {
         startAngle={-90}
         endAngle={90}
         fill="rgba(128, 128, 128, 0.2)"
+        innerLabel="66%"
       />
     </div>
   );

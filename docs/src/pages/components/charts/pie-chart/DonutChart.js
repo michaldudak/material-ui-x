@@ -19,7 +19,7 @@ export default function DonutChart() {
 
   return (
     <div style={{ width: '100%', height: 350 }}>
-      <PieChart data={data} innerRadius={90} />
+      <PieChart data={data} innerRadius={90} innerLabel="Electric" />
     </div>
   );
 }
