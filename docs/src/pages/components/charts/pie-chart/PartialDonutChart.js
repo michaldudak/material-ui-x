@@ -18,6 +18,7 @@ export default function PartialDonutChart() {
     <PieChart
       data={data}
       innerRadius={110}
+      cornerRadius={8}
       startAngle={-90}
       endAngle={90}
       fill="rgba(128, 128, 128, 0.2)"

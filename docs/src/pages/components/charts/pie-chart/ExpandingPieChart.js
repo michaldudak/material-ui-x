@@ -22,9 +22,10 @@ export default function ExpaindingPieChart() {
   return (
     <PieChart
       data={data}
+      cornerRadius={8}
       expandOnHover
       label="Car sales"
-      margin={{ top: 70, bottom: 20 }}
+      margin={{ top: 80, bottom: 40 }}
       segmentLabelRadius={170}
       sort="ascending"
     />

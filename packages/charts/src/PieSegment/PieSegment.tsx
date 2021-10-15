@@ -12,6 +12,11 @@ interface SegmentData {
 
 export interface PieSegmentProps {
   /**
+   * Radius of the segment corner.
+   * @default 0
+   */
+  cornerRadius?: number;
+  /**
    * The data to use for the segment.
    */
   data: SegmentData;
@@ -52,6 +57,7 @@ export interface PieSegmentProps {
 
 function PieSegment(props: PieSegmentProps) {
   const {
+    cornerRadius = 0,
     data,
     expandOnHover,
     innerRadius = 0,
@@ -67,7 +73,8 @@ function PieSegment(props: PieSegmentProps) {
   const arc = d3
     .arc()
     .innerRadius(innerRadius + radiusAdd)
-    .outerRadius(radius + radiusAdd);
+    .outerRadius(radius + radiusAdd)
+    .cornerRadius(cornerRadius);
 
   const labelArc = d3
     .arc()

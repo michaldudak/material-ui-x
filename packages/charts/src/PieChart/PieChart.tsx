@@ -27,6 +27,11 @@ function descending(a, b) {
 }
 export interface PieChartProps {
   /**
+   * Radius of the segment corners.
+   * @default 0
+   */
+  cornerRadius?: number;
+  /**
    * The data to use for the chart.
    */
   data: ChartData[];
@@ -112,12 +117,14 @@ export interface PieChartProps {
   sort?: 'ascending' | 'descending';
   /**
    * The angle in degrees from which to start rendering the first segment.
+   * @default 0
    */
   startAngle?: number;
 }
 
 const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChart(props, ref) {
   const {
+    cornerRadius = 0,
     data,
     endAngle: endAngleProp,
     expandOnHover = false,
@@ -212,6 +219,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
               data: { fill },
             }}
             innerRadius={innerRadius}
+            cornerRadius={cornerRadius}
             radius={radius}
           />
         )}
@@ -220,6 +228,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
             data={d}
             expandOnHover={expandOnHover}
             innerRadius={innerRadius}
+            cornerRadius={cornerRadius}
             label={d.data.label}
             labelColor={segmentLabelColor}
             labelFontSize={segmentLabelFontSize}
