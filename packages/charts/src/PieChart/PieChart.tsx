@@ -176,7 +176,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
 
   // From: https://codesandbox.io/s/drilldown-piechart-in-react-and-d3-d62y5
   useEffect(() => {
-    d3.selection()
+    d3.select(chartRef.current)
       .transition('pie-reveal')
       .duration(500)
       .ease(d3.easeSinInOut)
