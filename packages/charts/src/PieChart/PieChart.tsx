@@ -111,7 +111,7 @@ export interface PieChartProps {
   /**
    * The radius at which to place the segment label.
    */
-  segmentLabelRadius?: number;
+  segmentLabelRadiusPercent?: number;
   /**
    * The sort order for the segments.
    */
@@ -142,7 +142,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
     ratio: ratioProp,
     segmentLabelColor = 'currentColor',
     segmentLabelFontSize = 12,
-    segmentLabelRadius,
+    segmentLabelRadiusPercent,
     sort,
     startAngle: startAngleProp = 0,
     ...other
@@ -234,7 +234,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
             label={d.data.label}
             labelColor={segmentLabelColor}
             labelFontSize={segmentLabelFontSize}
-            labelRadius={segmentLabelRadius}
+            labelRadiusPercent={segmentLabelRadiusPercent}
             key={i}
             radius={radius}
           />

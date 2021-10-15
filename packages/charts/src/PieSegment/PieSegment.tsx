@@ -47,7 +47,7 @@ export interface PieSegmentProps {
   /**
    * The radius at which to place the label.
    */
-  labelRadius?: number;
+  labelRadiusPercent?: number;
   /**
    * The radius of the pie chart.
    * @default 100
@@ -64,12 +64,14 @@ function PieSegment(props: PieSegmentProps) {
     label,
     labelColor = 'currentColor',
     labelFontSize = 12,
-    labelRadius: labelRadiusProp,
+    labelRadiusPercent,
     radius = 100,
   } = props;
 
   const [radiusAdd, setRadiusAdd] = useState(0);
-  const labelRadius = labelRadiusProp ? labelRadiusProp * 2 + radiusAdd : radius + radiusAdd;
+  const labelRadius = labelRadiusPercent
+    ? (radius * labelRadiusPercent) / 50 + radiusAdd
+    : radius + radiusAdd;
   const arc = d3
     .arc()
     .innerRadius(innerRadius + radiusAdd)

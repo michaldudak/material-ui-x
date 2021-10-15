@@ -13,7 +13,7 @@ const data = [
   },
 ];
 
-export default function PartialDonutChart() {
+export default function Dial() {
   return (
     <PieChart
       data={data}

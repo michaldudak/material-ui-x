@@ -26,7 +26,7 @@ export default function ExpaindingPieChart() {
       expandOnHover
       label="Car sales"
       margin={{ top: 80, bottom: 40 }}
-      segmentLabelRadius={170}
+      segmentLabelRadiusPercent={110}
       sort="ascending"
     />
   );
