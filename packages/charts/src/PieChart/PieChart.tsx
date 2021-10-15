@@ -90,6 +90,11 @@ export interface PieChartProps {
    */
   margin?: Margin;
   /**
+   * The spacing between sgements.
+   * @default 0
+   */
+  padAngle?: number;
+  /**
    * The radius of the pie chart.
    */
   radius?: number;
@@ -138,6 +143,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
     labelColor = 'currentColor',
     labelFontSize = 18,
     margin: marginProp,
+    padAngle: padAngleProp = 0,
     radius: radiusProp,
     ratio: ratioProp,
     segmentLabelColor = 'currentColor',
@@ -175,10 +181,13 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
   const endAngle = endAngleProp
     ? (((endAngleProp * Math.PI) / 180) * percentVisible) / 100
     : startAngle + ((((360 - startAngle) * Math.PI) / 180) * percentVisible) / 100;
+  const padAngle = (padAngleProp * Math.PI) / 180; // Degrees to radians
+
   const pie = d3
     .pie()
     .startAngle(startAngle)
     .endAngle(endAngle)
+    .padAngle(padAngle)
     .value((d) => d.value)
     .sort(sortOrder);
 
