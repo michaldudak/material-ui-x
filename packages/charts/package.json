@@ -20,7 +20,7 @@
   },
   "scripts": {
     "typescript": "tsc -p tsconfig.json",
-    "build": "cd ../ && rollup --config rollup.data-grid.config.js"
+    "build": "cd ../ && rollup --config rollup.charts.config.js"
   },
   "keywords": [
     "react",

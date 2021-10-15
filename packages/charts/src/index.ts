@@ -9,3 +9,6 @@ export * from './BarChart';
 
 export { default as PieChart } from './PieChart';
 export * from './PieChart';
+
+export { default as PieSegment } from './PieSegment';
+export * from './PieSegment';
