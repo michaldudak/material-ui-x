@@ -11,7 +11,7 @@ function generateData() {
   return d3.range(numSegments).map((i) => ({
     value: d3.randomNormal(numSegments, 2)(),
     fill: deepPurple[Object.keys(deepPurple)[i]],
-    stroke: 'white',
+    stroke: deepPurple[Object.keys(deepPurple)[i + 1]],
     label: labels[i],
   }));
 }
@@ -27,7 +27,9 @@ export default function ExpaindingPieChart() {
       label="Car sales"
       margin={{ top: 80, bottom: 40 }}
       segmentLabelRadiusPercent={110}
+      innerRadiusPercent={4}
       sort="ascending"
+      padAngle={1}
     />
   );
 }

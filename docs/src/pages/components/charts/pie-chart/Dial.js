@@ -6,6 +6,7 @@ const data = [
   {
     value: 2,
     fill: teal[100],
+    stroke: teal[200],
   },
   {
     value: 1,
