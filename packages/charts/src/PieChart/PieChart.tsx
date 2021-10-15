@@ -67,9 +67,10 @@ export interface PieChartProps {
    */
   innerLabelFontSize?: number;
   /**
-   * The radius at which to start the inside of the segment.
+   * The radius at which to start the inside of the segment as a percentage of the outer radius.
+   * @default 0
    */
-  innerRadius?: number;
+  innerRadiusPercent?: number;
   /**
    * The label to display above the chart.
    */
@@ -132,7 +133,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
     height: heightProp,
     innerLabel,
     innerLabelFontSize = 24,
-    innerRadius = 0,
+    innerRadiusPercent = 0,
     label,
     labelColor = 'currentColor',
     labelFontSize = 18,
@@ -194,6 +195,7 @@ const PieChart = React.forwardRef<SVGSVGElement, PieChartProps>(function PieChar
   }, [data]);
 
   const radius = radiusProp || Math.min(boundedWidth, boundedHeight) / 2;
+  const innerRadius = (radius * innerRadiusPercent) / 100;
   const chartHeight = heightProp || width * ratio;
 
   return (

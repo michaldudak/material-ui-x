@@ -19,7 +19,7 @@ The `labelRadius` prop can be used to adjust the label position. Remember to all
 
 ## Donut chart
 
-You can use the `innerRadius` prop to create a donut.
+You can use the `innerRadiusPercent` prop to create a donut.
 
 {{"demo": "pages/components/charts/pie-chart/DonutChart.js"}}
 
