@@ -64,7 +64,7 @@ export default function ZoomableLineChart() {
   }, [domain]);
 
   return (
-    <Stack>
+    <Stack style={{ width: '100%' }}>
       <Box>
         <LineChart
           data={chartData}
