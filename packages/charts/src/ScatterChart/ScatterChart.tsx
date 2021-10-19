@@ -3,7 +3,7 @@ import { useForkRef } from '@mui/material/utils';
 import ChartContext from '../ChartContext';
 import useChartDimensions from '../hooks/useChartDimensions';
 import useTicks from '../hooks/useTicks';
-import useScale from '../hooks/useScale';
+import getScale from '../utils/getScale';
 import { getExtent, getMaxDataSetLength, stringRatioToNumber } from '../utils';
 
 interface ChartData<X, Y> {
@@ -173,14 +173,23 @@ const ScatterChart = React.forwardRef(function ScatterChart<X = unknown, Y = unk
   const [chartRef, dimensions] = useChartDimensions(chartSettings);
   const handleRef = useForkRef(chartRef, ref);
   const { width, height, boundedWidth, boundedHeight, marginLeft, marginTop } = dimensions;
+
+  // TODO: handle cases for stacked data (extract into a different component?)
+  // @ts-ignore
   const xDomain = getExtent(data, (d) => d[xKey], xDomainProp);
+  // @ts-ignore
   const yDomain = getExtent(data, (d) => d[yKey], yDomainProp);
+  // @ts-ignore
   const zDomain = getExtent(data, (d) => d[zKey], zDomainProp);
   const xRange = [0, boundedWidth];
   const yRange = [0, boundedHeight];
   const maxXTicks = getMaxDataSetLength(data) - 1;
-  const xScale = useScale(xScaleType, xDomain, xRange);
-  const yScale = useScale(yScaleType, yDomain, yRange);
+
+  // TODO: handle cases where xDomain / yDomain are [undefined, undefined]
+  // @ts-ignore
+  const xScale = getScale(xScaleType, xDomain, xRange);
+  // @ts-ignore
+  const yScale = getScale(yScaleType, yDomain, yRange);
   const xTicks = useTicks({
     maxTicks: maxXTicks,
     tickSpacing,
@@ -191,7 +200,7 @@ const ScatterChart = React.forwardRef(function ScatterChart<X = unknown, Y = unk
     tickSpacing,
     maxTicks: 999,
   });
-  const chartHeight = heightProp || (width * ratio);
+  const chartHeight = heightProp || width * ratio;
 
   return (
     <ChartContext.Provider

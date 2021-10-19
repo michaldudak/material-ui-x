@@ -3,11 +3,12 @@ import * as d3 from 'd3';
 import { unstable_useForkRef as useForkRef, unstable_useId as useId } from '@mui/utils';
 import ChartContext from '../ChartContext';
 import useChartDimensions from '../hooks/useChartDimensions';
-import useScale from '../hooks/useScale';
+import getScale from '../utils/getScale';
 import useStackedArrays from '../hooks/useStackedArrays';
 import useThrottle from '../hooks/useThrottle';
 import useTicks from '../hooks/useTicks';
 import { getExtent, getMaxDataSetLength, stringRatioToNumber } from '../utils';
+import { Scale } from '../Scale';
 
 interface Margin {
   bottom?: number;
@@ -26,8 +27,6 @@ type MarkerShape =
   | 'triangle'
   | 'wye'
   | 'none';
-
-type Scale = 'linear' | 'time' | 'log' | 'point' | 'pow' | 'sqrt' | 'utc';
 
 export interface LineChartProps<RecordType = unknown, X = unknown> {
   /**
@@ -118,7 +117,7 @@ export interface LineChartProps<RecordType = unknown, X = unknown> {
   /**
    * The scale type to use for the x axis.
    */
-  xScaleType?: Scale;
+  xScaleType?: Exclude<Scale, 'point'>;
   /**
    * Override the calculated domain of the y axis.
    * By default, the domain starts at zero. Set the value to null to calculate the true domain.
@@ -131,7 +130,7 @@ export interface LineChartProps<RecordType = unknown, X = unknown> {
   /**
    * The scale type to use for the y axis.
    */
-  yScaleType?: Scale;
+  yScaleType?: Exclude<Scale, 'point'>;
 }
 
 type LineChartComponent = <X, Y>(
@@ -188,7 +187,8 @@ const LineChart = React.forwardRef(function LineChart<RecordType = unknown, X = 
       // @ts-ignore TODO: fix me
       data = stackGen(dataProp);
     } else {
-      (data as any) = stackedData;
+      // @ts-ignore TODO: Fix me
+      data = stackedData;
     }
   }
 
@@ -236,13 +236,20 @@ const LineChart = React.forwardRef(function LineChart<RecordType = unknown, X = 
     yGetter = (record: RecordType) => (record as any).y as number;
   }
 
+  // TODO: handle cases for stacked data (extract into a different component?)
+  // @ts-ignore
   const xDomain = getExtent(data, (d: RecordType) => xGetter(d), xDomainProp);
+  // @ts-ignore
   const yDomain = getExtent(data, (d: RecordType) => yGetter(d), yDomainProp);
   const xRange = [0, boundedWidth];
   const yRange = [0, boundedHeight];
   const maxXTicks = getMaxDataSetLength(data) - 1;
-  const xScale = useScale(xScaleType, xDomain, xRange);
-  const yScale = useScale(yScaleType, yDomain, yRange);
+
+  // TODO: handle cases where xDomain / yDomain are [undefined, undefined]
+  // @ts-ignore
+  const xScale = getScale(xScaleType, xDomain, xRange);
+  // @ts-ignore
+  const yScale = getScale(yScaleType, yDomain, yRange);
 
   const xTicks = useTicks({
     scale: xScale,
@@ -261,7 +268,7 @@ const LineChart = React.forwardRef(function LineChart<RecordType = unknown, X = 
     y: -1,
   });
 
-  const handleMouseMove = useThrottle((event) => {
+  const handleMouseMove = useThrottle((event: React.MouseEvent) => {
     setMousePosition({
       x: event.nativeEvent.offsetX - marginLeft,
       y: event.nativeEvent.offsetY - marginTop,

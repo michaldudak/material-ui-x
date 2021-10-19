@@ -5,7 +5,7 @@ import ChartContext from '../ChartContext';
 import useChartDimensions from '../hooks/useChartDimensions';
 import useStackedArrays from '../hooks/useStackedArrays';
 import useTicks from '../hooks/useTicks';
-import useScale from '../hooks/useScale';
+import getScale from '../utils/getScale';
 import useThrottle from '../hooks/useThrottle';
 import { getExtent, getMaxDataSetLength, stringRatioToNumber } from '../utils';
 
@@ -147,13 +147,16 @@ const BarChart = React.forwardRef(function BarChart<X = unknown, Y = unknown>(
   } = props;
 
   let data = dataProp;
-  const stackedData = useStackedArrays(dataProp);
+
+  // TODO: Correct types and remove `any`
+  const stackedData = useStackedArrays(dataProp as any);
   if (stacked) {
     if (keys) {
       const stackGen = d3.stack().keys(keys);
       // @ts-ignore TODO: Fix me
       data = stackGen(dataProp);
     } else {
+      // @ts-ignore TODO: Fix me
       data = stackedData;
     }
   }
@@ -171,13 +174,22 @@ const BarChart = React.forwardRef(function BarChart<X = unknown, Y = unknown>(
   const handleRef = useForkRef(chartRef, ref);
   const [seriesMeta, setSeriesMeta] = React.useState([]);
   const { width, height, boundedWidth, boundedHeight, marginLeft, marginTop } = dimensions;
+
+  // TODO: handle cases for stacked data (extract into a different component?)
+  // @ts-ignore
   const xDomain = getExtent(data, (d) => d[xKey], xDomainProp);
+  // @ts-ignore
   const yDomain = getExtent(data, (d) => d[yKey], yDomainProp);
   const xRange = [padding * 4, boundedWidth - 4 * padding];
   const yRange = [0, boundedHeight];
   const maxXTicks = getMaxDataSetLength(data) - 1;
-  const xScale = useScale(xScaleType, xDomain, xRange);
-  const yScale = useScale(yScaleType, yDomain, yRange);
+
+  // TODO: handle cases where xDomain / yDomain are [undefined, undefined]
+  // @ts-ignore
+  const xScale = getScale(xScaleType, xDomain, xRange);
+  // @ts-ignore
+  const yScale = getScale(yScaleType, yDomain, yRange);
+
   const xTicks = useTicks({
     scale: xScale,
     tickSpacing,
@@ -207,7 +219,7 @@ const BarChart = React.forwardRef(function BarChart<X = unknown, Y = unknown>(
       y: -1,
     });
   };
-  const chartHeight = heightProp || (width * ratio);
+  const chartHeight = heightProp || width * ratio;
 
   return (
     <ChartContext.Provider

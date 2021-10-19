@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import ChartContext from '../ChartContext';
-import { getSymbol } from '../utils';
+import { getSymbolIndex } from '../utils';
 
 function Legend(props) {
   const {
@@ -44,7 +44,7 @@ function Legend(props) {
             <React.Fragment key={series}>
               <path
                 // @ts-ignore TODO: Fix me
-                d={d3.symbol(d3.symbols[getSymbol(markerShape, series)], markerSize)()}
+                d={d3.symbol(d3.symbols[getSymbolIndex(markerShape, series)], markerSize)()}
                 fill={invertMarkers ? stroke : fill}
                 stroke={invertMarkers ? fill : stroke}
                 // @ts-ignore TODO: Fix me

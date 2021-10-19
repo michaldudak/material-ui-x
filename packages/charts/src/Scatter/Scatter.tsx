@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import ChartContext from '../ChartContext';
-import { getSymbol, isInRange } from '../utils';
+import { getSymbolIndex, isInRange } from '../utils';
 
 const plot = (value, domain, size) => {
   return ((value - domain[0]) / (domain[1] - domain[0])) * size;
@@ -64,7 +64,7 @@ const Scatter = (props) => {
             <path
               // @ts-ignore TODO: Fix me
               d={d3.symbol(
-                d3.symbols[getSymbol(markerShape, series)],
+                d3.symbols[getSymbolIndex(markerShape, series)],
                 z ? plot(z, zDomain, maxSize - minSize) + minSize : minSize,
               )()}
               transform={`translate(${xScale(x)}, 
