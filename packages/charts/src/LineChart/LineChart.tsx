@@ -8,7 +8,7 @@ import useStackedArrays from '../hooks/useStackedArrays';
 import useThrottle from '../hooks/useThrottle';
 import useTicks from '../hooks/useTicks';
 import { getExtent, getMaxDataSetLength, stringRatioToNumber } from '../utils';
-import { Scale } from '../Scale';
+import { ContinuousScale } from '../Scale';
 
 interface Margin {
   bottom?: number;
@@ -117,7 +117,7 @@ export interface LineChartProps<RecordType = unknown, X = unknown> {
   /**
    * The scale type to use for the x axis.
    */
-  xScaleType?: Exclude<Scale, 'point'>;
+  xScaleType?: Exclude<ContinuousScale, 'point'>;
   /**
    * Override the calculated domain of the y axis.
    * By default, the domain starts at zero. Set the value to null to calculate the true domain.
@@ -130,7 +130,7 @@ export interface LineChartProps<RecordType = unknown, X = unknown> {
   /**
    * The scale type to use for the y axis.
    */
-  yScaleType?: Exclude<Scale, 'point'>;
+  yScaleType?: Exclude<ContinuousScale, 'point'>;
 }
 
 type LineChartComponent = <X, Y>(
